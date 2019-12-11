@@ -188,16 +188,19 @@ public class JavaHTTPServer implements Runnable{
 	}
 	
 	private void fileNotFound(PrintWriter out, OutputStream dataOut, String fileRequested) throws IOException {
-		   /* if (!fileRequested.endsWith("/")) {
+		      /*
+                  HttpServletResponse response;
+                response.sendRedirect("http://somewhere");
+                   */
+                      
+                      
+                      /* if (!fileRequested.endsWith("/")) {
                    response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
                     response.setHeader("Location", "http://somewhere/");
 				}*/
                    
                    
-                   /*
-                   response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-                    response.setHeader("Location", "http://somewhere/");
-                   */
+                
                     File file = new File(WEB_ROOT, FILE_NOT_FOUND);
                     int fileLength = (int) file.length();
                     String content = "text/html";
