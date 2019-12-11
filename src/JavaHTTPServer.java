@@ -102,7 +102,9 @@ public class JavaHTTPServer implements Runnable{
 				dataOut.write(fileData, 0, fileLength);
 				dataOut.flush();
 				
-			} else {
+			} else 
+                        
+                        {
 				// GET or HEAD method
 				if (fileRequested.endsWith("/")) {
 					fileRequested += DEFAULT_FILE;
@@ -128,6 +130,7 @@ public class JavaHTTPServer implements Runnable{
 					dataOut.flush();
 				}
 				
+                                
 				if (verbose) {
 					System.out.println("File " + fileRequested + " of type " + content + " returned");
 				}
@@ -185,11 +188,22 @@ public class JavaHTTPServer implements Runnable{
 	}
 	
 	private void fileNotFound(PrintWriter out, OutputStream dataOut, String fileRequested) throws IOException {
-		File file = new File(WEB_ROOT, FILE_NOT_FOUND);
-		int fileLength = (int) file.length();
-		String content = "text/html";
-		byte[] fileData = readFileData(file, fileLength);
-		
+		   /* if (!fileRequested.endsWith("/")) {
+                   response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+                    response.setHeader("Location", "http://somewhere/");
+				}*/
+                   
+                   
+                   /*
+                   response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+                    response.setHeader("Location", "http://somewhere/");
+                   */
+                    File file = new File(WEB_ROOT, FILE_NOT_FOUND);
+                    int fileLength = (int) file.length();
+                    String content = "text/html";
+                    byte[] fileData = readFileData(file, fileLength);
+                
+            
 		out.println("HTTP/1.1 404 File Not Found");
 		out.println("Server: Java HTTP Server from SSaurel : 1.0");
 		out.println("Date: " + new Date());
