@@ -12,7 +12,6 @@ import java.net.Socket;
 import java.util.Date;
 import java.util.StringTokenizer;
 
-// Each Client Connection will be managed in a dedicated Thread
 public class JavaHTTPServer implements Runnable{ 
 	
 	static final File WEB_ROOT = new File(".");
@@ -54,6 +53,7 @@ public class JavaHTTPServer implements Runnable{
 			System.err.println("Server Connection error : " + e.getMessage());
 		}
 	}
+        
 
 	@Override
 	public void run() {
@@ -92,7 +92,7 @@ public class JavaHTTPServer implements Runnable{
 					
 				// we send HTTP Headers with data to client
 				out.println("HTTP/1.1 501 Not Implemented");
-				out.println("Server: Java HTTP Server from SSaurel : 1.0");
+				out.println("Server: Java HTTP Server from Milallo : 1.0");
 				out.println("Date: " + new Date());
 				out.println("Content-type: " + contentMimeType);
 				out.println("Content-length: " + fileLength);
@@ -102,9 +102,7 @@ public class JavaHTTPServer implements Runnable{
 				dataOut.write(fileData, 0, fileLength);
 				dataOut.flush();
 				
-			} else 
-                        
-                        {
+			} else {
 				// GET or HEAD method
 				if (fileRequested.endsWith("/")) {
 					fileRequested += DEFAULT_FILE;
@@ -119,7 +117,7 @@ public class JavaHTTPServer implements Runnable{
 					
 					// send HTTP Headers
 					out.println("HTTP/1.1 200 OK");
-					out.println("Server: Java HTTP Server from SSaurel : 1.0");
+					out.println("Server: Java HTTP Server from Milallo : 1.0");
 					out.println("Date: " + new Date());
 					out.println("Content-type: " + content);
 					out.println("Content-length: " + fileLength);
@@ -130,7 +128,6 @@ public class JavaHTTPServer implements Runnable{
 					dataOut.flush();
 				}
 				
-                                
 				if (verbose) {
 					System.out.println("File " + fileRequested + " of type " + content + " returned");
 				}
@@ -139,6 +136,9 @@ public class JavaHTTPServer implements Runnable{
 			
 		} catch (FileNotFoundException fnfe) {
 			try {
+                                if((!fileRequested.endsWith("/")) && (!fileRequested.endsWith("html"))){
+                                    MovedPermanently(out, dataOut, fileRequested);
+                                }
 				fileNotFound(out, dataOut, fileRequested);
 			} catch (IOException ioe) {
 				System.err.println("Error with file not found exception : " + ioe.getMessage());
@@ -186,38 +186,43 @@ public class JavaHTTPServer implements Runnable{
 		else
 			return "text/plain";
 	}
-	
-	private void fileNotFound(PrintWriter out, OutputStream dataOut, String fileRequested) throws IOException {
-		      /*
-                  HttpServletResponse response;
-                response.sendRedirect("http://somewhere");
-                   */
-                      
-                      
-                      /* if (!fileRequested.endsWith("/")) {
-                   response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-                    response.setHeader("Location", "http://somewhere/");
-				}*/
-                   
-                   
-                
+        
+	private void MovedPermanently(PrintWriter out, OutputStream dataOut, String fileRequested) throws IOException{
+                  
+                File file = new File(WEB_ROOT, DEFAULT_FILE);
+                    int fileLength = (int) file.length();
+                    String content = "text/html";
+                    byte[] fileData = readFileData(file, fileLength);
+		
+                    out.println("HTTP/1.1 301 Moved Permanently");
+                    out.println("Location:" + fileRequested +"/");
+                    out.println("Server: Java HTTP Server from Milallo : 1.0");
+                    out.println("Date: " + new Date());
+                    out.println("Content-type: " + content);
+                    out.println("Content-length: " + fileLength);
+                    out.println(); // blank line between headers and content, very important !
+                    out.flush(); // flush character output stream buffer
+		
+                    dataOut.write(fileData, 0, fileLength);
+                    dataOut.flush();
+        }
+        
+	private void fileNotFound(PrintWriter out, OutputStream dataOut, String fileRequested) throws IOException {            
                     File file = new File(WEB_ROOT, FILE_NOT_FOUND);
                     int fileLength = (int) file.length();
                     String content = "text/html";
                     byte[] fileData = readFileData(file, fileLength);
-                
-            
-		out.println("HTTP/1.1 404 File Not Found");
-		out.println("Server: Java HTTP Server from SSaurel : 1.0");
-		out.println("Date: " + new Date());
-		out.println("Content-type: " + content);
-		out.println("Content-length: " + fileLength);
-		out.println(); // blank line between headers and content, very important !
-		out.flush(); // flush character output stream buffer
 		
-		dataOut.write(fileData, 0, fileLength);
-		dataOut.flush();
+                    out.println("HTTP/1.1 404 File Not Found");
+                    out.println("Server: Java HTTP Server from Milallo : 1.0");
+                    out.println("Date: " + new Date());
+                    out.println("Content-type: " + content);
+                    out.println("Content-length: " + fileLength);
+                    out.println(); // blank line between headers and content, very important !
+                    out.flush(); // flush character output stream buffer
 		
+                    dataOut.write(fileData, 0, fileLength);
+                    dataOut.flush();
 		if (verbose) {
 			System.out.println("File " + fileRequested + " not found");
 		}
