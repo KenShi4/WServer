@@ -1,3 +1,6 @@
+ 
+
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -92,7 +95,7 @@ public class JavaHTTPServer implements Runnable{
 					
 				// we send HTTP Headers with data to client
 				out.println("HTTP/1.1 501 Not Implemented");
-				out.println("Server: Java HTTP Server from Milallo : 1.0");
+				out.println("Server: Java HTTP Server from GK : 1.0");
 				out.println("Date: " + new Date());
 				out.println("Content-type: " + contentMimeType);
 				out.println("Content-length: " + fileLength);
@@ -117,7 +120,7 @@ public class JavaHTTPServer implements Runnable{
 					
 					// send HTTP Headers
 					out.println("HTTP/1.1 200 OK");
-					out.println("Server: Java HTTP Server from Milallo : 1.0");
+					out.println("Server: Java HTTP Server from GK : 1.0");
 					out.println("Date: " + new Date());
 					out.println("Content-type: " + content);
 					out.println("Content-length: " + fileLength);
@@ -138,8 +141,8 @@ public class JavaHTTPServer implements Runnable{
 			try {
                                 if((!fileRequested.endsWith("/")) && (!fileRequested.endsWith("html"))){
                                     MovedPermanently(out, dataOut, fileRequested);
-                                }
-				fileNotFound(out, dataOut, fileRequested);
+                                } else{
+				fileNotFound(out, dataOut, fileRequested);}
 			} catch (IOException ioe) {
 				System.err.println("Error with file not found exception : " + ioe.getMessage());
 			}
@@ -196,10 +199,7 @@ public class JavaHTTPServer implements Runnable{
 		
                     out.println("HTTP/1.1 301 Moved Permanently");
                     out.println("Location:" + fileRequested +"/");
-                    out.println("Server: Java HTTP Server from Milallo : 1.0");
-                    out.println("Date: " + new Date());
-                    out.println("Content-type: " + content);
-                    out.println("Content-length: " + fileLength);
+
                     out.println(); // blank line between headers and content, very important !
                     out.flush(); // flush character output stream buffer
 		
@@ -214,7 +214,7 @@ public class JavaHTTPServer implements Runnable{
                     byte[] fileData = readFileData(file, fileLength);
 		
                     out.println("HTTP/1.1 404 File Not Found");
-                    out.println("Server: Java HTTP Server from Milallo : 1.0");
+                    out.println("Server: Java HTTP Server from GK : 1.0");
                     out.println("Date: " + new Date());
                     out.println("Content-type: " + content);
                     out.println("Content-length: " + fileLength);
