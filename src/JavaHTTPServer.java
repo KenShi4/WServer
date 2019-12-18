@@ -166,7 +166,7 @@ public class JavaHTTPServer implements Runnable{
 		
 		
 	}
-	
+
 	private byte[] readFileData(File file, int fileLength) throws IOException {
 		FileInputStream fileIn = null;
 		byte[] fileData = new byte[fileLength];
@@ -186,6 +186,15 @@ public class JavaHTTPServer implements Runnable{
 	private String getContentType(String fileRequested) {
 		if (fileRequested.endsWith(".htm")  ||  fileRequested.endsWith(".html"))
 			return "text/html";
+                
+                if(fileRequested.endsWith(".css"))
+                    return "text/css";
+                
+                if(fileRequested.endsWith(".png"))
+                    return "text/png";
+                
+                if(fileRequested.endsWith(".jpeg"))
+                    return "text/jpeg";
 		else
 			return "text/plain";
 	}
@@ -202,11 +211,10 @@ public class JavaHTTPServer implements Runnable{
 
                     out.println(); // blank line between headers and content, very important !
                     out.flush(); // flush character output stream buffer
-		
-                    dataOut.write(fileData, 0, fileLength);
-                    dataOut.flush();
         }
-        
+
+                
+                
 	private void fileNotFound(PrintWriter out, OutputStream dataOut, String fileRequested) throws IOException {            
                     File file = new File(WEB_ROOT, FILE_NOT_FOUND);
                     int fileLength = (int) file.length();
