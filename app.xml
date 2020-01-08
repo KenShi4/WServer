@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<app>
-    <config>
-        <path>pippo</path>
-        <auth>admin</auth>
-    </config>
-    <config>
+<WServer>
+    <JavaHTTPServer>
+       <PORT>8080</PORT>
+    </JavaHTTPServer>
+    <JavaHTTPServer>
         <path>pluto</path>
         <auth>user</auth>
-    </config>
-</app>
+    </JavaHTTPServer>
+</WServer>

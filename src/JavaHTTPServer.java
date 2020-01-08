@@ -14,15 +14,21 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
 import java.util.StringTokenizer;
+import pojo.App;
+import parser.AppConfigParser;
+import java.net.URISyntaxException;
+import javax.xml.bind.JAXBException;
 
 public class JavaHTTPServer implements Runnable{ 
 	
-	static final File WEB_ROOT = new File(".");
-	static final String DEFAULT_FILE = "index.html";
-	static final String FILE_NOT_FOUND = "404.html";
-	static final String METHOD_NOT_SUPPORTED = "not_supported.html";
+    
+    
+	static final File WEB_ROOT;
+	static final String DEFAULT_FILE;
+	static final String FILE_NOT_FOUND;
+	static final String METHOD_NOT_SUPPORTED ;
 	// port to listen connection
-	static final int PORT = 8080;
+	static final int PORT;
 	
 	// verbose mode
 	static final boolean verbose = true;
@@ -34,7 +40,11 @@ public class JavaHTTPServer implements Runnable{
 		connect = c;
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws JAXBException {
+            
+            
+            
+            
 		try {
 			ServerSocket serverConnect = new ServerSocket(PORT);
 			System.out.println("Server started.\nListening for connections on port : " + PORT + " ...\n");

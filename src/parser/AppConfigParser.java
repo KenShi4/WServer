@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package it.itismeucci.parser;
+package parser;
 
-import it.itismeucci.pojo.App;
+import pojo.App;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
