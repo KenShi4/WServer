@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<app>
+    <config>
+        <path>pippo</path>
+        <auth>admin</auth>
+    </config>
+    <config>
+        <path>pluto</path>
+        <auth>user</auth>
+    </config>
+</app>
